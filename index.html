@@ -200,13 +200,25 @@
     display: flex;
     justify-content: flex-end;
     align-items: center;
-    gap: 10px;
+    gap: 8px;
   }
   .searching-text {
     font-size: 11px;
     font-weight: 700;
     color: #2f5597;
     display: none;
+  }
+  .btn-clear {
+    background: #f1f5f9;
+    color: #1f2937;
+    border: 1px solid #9ca3af;
+    padding: 5px 12px;
+    font-size: 11px;
+    font-weight: 700;
+    cursor: pointer;
+  }
+  .btn-clear:hover {
+    background: #e2e8f0;
   }
   .btn-search {
     background: #2f5597;
@@ -247,10 +259,20 @@
     border: 1px solid #cbd5e1;
     text-align: center;
     color: #111827;
+    vertical-align: middle;
   }
   .status-val {
     font-weight: 700;
     color: #15803d;
+  }
+  .receipt-icon-btn {
+    background: transparent;
+    border: none;
+    padding: 2px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
   }
   .error-box {
     margin-top: 12px;
@@ -374,6 +396,7 @@
 
       <div class="submit-row">
         <span id="searchingLabel" class="searching-text">Searching...</span>
+        <button type="button" id="clearBtn" class="btn-clear">Clear</button>
         <button type="submit" id="searchBtn" class="btn-search">Search</button>
       </div>
     </form>
@@ -389,6 +412,7 @@
           <th>Travel Document Nationality</th>
           <th>Travel Document Number</th>
           <th>Status</th>
+          <th>Payment Receipt</th>
         </tr>
       </thead>
       <tbody>
@@ -397,6 +421,16 @@
           <td id="resNat"></td>
           <td id="resDocNo"></td>
           <td class="status-val">Approved</td>
+          <td>
+            <button type="button" class="receipt-icon-btn" title="Payment Receipt" aria-label="Payment Receipt">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M6 3H18V21L15 19L12 21L9 19L6 21V3Z" fill="#fef3c7" stroke="#b45309" stroke-width="1.8"/>
+                <line x1="9" y1="8" x2="15" y2="8" stroke="#92400e" stroke-width="1.6"/>
+                <line x1="9" y1="12" x2="15" y2="12" stroke="#92400e" stroke-width="1.6"/>
+                <line x1="9" y1="16" x2="13" y2="16" stroke="#15803d" stroke-width="1.8"/>
+              </svg>
+            </button>
+          </td>
         </tr>
       </tbody>
     </table>
@@ -456,6 +490,13 @@
 
   window.addEventListener("pageshow", function() {
     document.getElementById("appTrackForm").reset();
+  });
+
+  document.getElementById("clearBtn").addEventListener("click", function() {
+    document.getElementById("appTrackForm").reset();
+    document.getElementById("resultTableWrap").style.display = "none";
+    document.getElementById("errorMsg").style.display = "none";
+    document.getElementById("searchingLabel").style.display = "none";
   });
 
   document.getElementById("appTrackForm").addEventListener("submit", function(event) {
