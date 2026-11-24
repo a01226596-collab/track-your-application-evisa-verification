@@ -294,3 +294,203 @@
     display: flex;
     flex-wrap: wrap;
     gap: 8px;
+    align-items: center;
+  }
+</style>
+</head>
+<body>
+
+<div class="top-banner">
+  <div class="brand-left">
+    <svg class="rop-crest" viewBox="0 0 100 105" xmlns="http://www.w3.org/2000/svg">
+      <path d="M38 18 L42 10 L50 14 L58 10 L62 18 Z" fill="#c81e1e" stroke="#7f1d1d" stroke-width="1.5"/>
+      <rect x="37" y="18" width="26" height="4" rx="1" fill="#d97706"/>
+      <path d="M35 24 C16 32, 14 62, 32 76" fill="none" stroke="#9ca3af" stroke-width="5" stroke-dasharray="4 2"/>
+      <path d="M65 24 C84 32, 86 62, 68 76" fill="none" stroke="#9ca3af" stroke-width="5" stroke-dasharray="4 2"/>
+      <circle cx="50" cy="50" r="20" fill="#f8fafc" stroke="#6b7280" stroke-width="2"/>
+      <line x1="38" y1="38" x2="62" y2="62" stroke="#4b5563" stroke-width="2.5"/>
+      <line x1="62" y1="38" x2="38" y2="62" stroke="#4b5563" stroke-width="2.5"/>
+      <path d="M47 40 L53 40 L51 60 L49 60 Z" fill="#9ca3af"/>
+      <path d="M18 76 Q50 92 82 76 L78 86 Q50 100 22 86 Z" fill="#1d4ed8" stroke="#1e3a8a" stroke-width="1.2"/>
+    </svg>
+    <div class="brand-titles">
+      <div class="brand-ar">شُرْطَة عُمَان السُّلْطَانِيَّة</div>
+      <div class="brand-en">ROYAL OMAN POLICE</div>
+    </div>
+  </div>
+  <div class="brand-right">
+    <div class="brand-right-top">Oman eVisa</div>
+    <div class="brand-right-sub">التأشيرة الإلكترونية العمانية</div>
+  </div>
+</div>
+
+<div class="nav-bar">
+  <div class="nav-links">
+    <svg class="home-icon" viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
+    <span>Know your Visa Type</span>
+    <span>|</span>
+    <span class="active">Track Your Application</span>
+    <span>|</span>
+    <span>Share Your Experience</span>
+    <span>|</span>
+    <span>Contact Us</span>
+    <span>|</span>
+    <span>FAQ</span>
+  </div>
+  <div class="nav-login">Login</div>
+</div>
+
+<div class="main-content">
+  <h1 class="page-title">Track Your Application</h1>
+
+  <div class="form-box">
+    <form id="appTrackForm" autocomplete="off">
+      <div class="form-grid">
+        <div class="input-card">
+          <label for="visaAppNo">Visa Application Number <span class="req">(*)</span></label>
+          <input type="text" id="visaAppNo" value="" autocomplete="off" required>
+        </div>
+
+        <div class="input-card">
+          <label for="nationalitySel">Document's Nationality <span class="req">(*)</span></label>
+          <select id="nationalitySel" autocomplete="off" required>
+            <option value="" selected disabled></option>
+          </select>
+        </div>
+
+        <div class="input-card">
+          <label for="travelDocNo">Travel Document Number <span class="req">(*)</span></label>
+          <input type="text" id="travelDocNo" value="" autocomplete="off" required>
+        </div>
+
+        <div class="input-card">
+          <div class="captcha-wrap">
+            <div class="captcha-box">2255</div>
+          </div>
+          <label for="captchaField">Text Verification <span class="req">(*)</span></label>
+          <input type="text" id="captchaField" value="" autocomplete="off" required>
+        </div>
+      </div>
+
+      <div class="submit-row">
+        <span id="searchingLabel" class="searching-text">Searching...</span>
+        <button type="submit" id="searchBtn" class="btn-search">Search</button>
+      </div>
+    </form>
+  </div>
+
+  <div id="errorMsg" class="error-box">No application record found for the provided details.</div>
+
+  <div id="resultTableWrap" class="result-section">
+    <table>
+      <thead>
+        <tr>
+          <th>Visa Application Number</th>
+          <th>Travel Document Nationality</th>
+          <th>Travel Document Number</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td id="resAppNo"></td>
+          <td id="resNat"></td>
+          <td id="resDocNo"></td>
+          <td class="status-val">Approved</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="footer-wrap">
+  <div class="footer-pattern"></div>
+  <div class="footer-bar">
+    <span>Copyright</span>
+    <span>|</span>
+    <span>Privacy Policy</span>
+    <span>|</span>
+    <span>Disclaimer</span>
+    <span>|</span>
+    <span>Sitemap</span>
+    <span>|</span>
+    <span>Terms and Conditions</span>
+  </div>
+</div>
+
+<script>
+  const countries = [
+    "AFGHANISTAN", "ALBANIA", "ALGERIA", "ANDORRA", "ANGOLA", "ARGENTINA",
+    "ARMENIA", "AUSTRALIA", "AUSTRIA", "AZERBAIJAN", "BAHRAIN", "BANGLADESH",
+    "BELARUS", "BELGIUM", "BELIZE", "BENIN", "BHUTAN", "BOLIVIA", "BRAZIL",
+    "BULGARIA", "BURKINA FASO", "BURUNDI", "CAMBODIA", "CAMEROON", "CANADA",
+    "CHAD", "CHILE", "CHINA", "COLOMBIA", "COMOROS", "CONGO", "COSTA RICA",
+    "CROATIA", "CUBA", "CYPRUS", "CZECHIA", "DENMARK", "DJIBOUTI", "ECUADOR",
+    "EGYPT", "ERITREA", "ESTONIA", "ETHIOPIA", "FINLAND", "FRANCE", "GABON",
+    "GAMBIA", "GEORGIA", "GERMANY", "GHANA", "GREECE", "GUINEA", "GUYANA",
+    "HAITI", "HONDURAS", "HUNGARY", "ICELAND", "INDIA", "INDONESIA", "IRAN",
+    "IRAQ", "IRELAND", "ITALY", "JAMAICA", "JAPAN", "JORDAN", "KAZAKHSTAN",
+    "KENYA", "KUWAIT", "KYRGYZSTAN", "LATVIA", "LEBANON", "LESOTHO", "LIBERIA",
+    "LIBYA", "LITHUANIA", "LUXEMBOURG", "MADAGASCAR", "MALAWI", "MALAYSIA",
+    "MALDIVES", "MALI", "MALTA", "MAURITANIA", "MAURITIUS", "MEXICO", "MOLDOVA",
+    "MONACO", "MONGOLIA", "MONTENEGRO", "MOROCCO", "MOZAMBIQUE", "MYANMAR",
+    "NAMIBIA", "NEPAL", "NETHERLANDS", "NEW ZEALAND", "NICARAGUA", "NIGER",
+    "NIGERIA", "NORTH MACEDONIA", "NORWAY", "OMAN", "PAKISTAN", "PALESTINE",
+    "PANAMA", "PARAGUAY", "PERU", "PHILIPPINES", "POLAND", "PORTUGAL", "QATAR",
+    "ROMANIA", "RUSSIA", "RWANDA", "SAUDI ARABIA", "SENEGAL", "SERBIA",
+    "SIERRA LEONE", "SINGAPORE", "SLOVAKIA", "SLOVENIA", "SOMALIA", "SOUTH AFRICA",
+    "SOUTH KOREA", "SOUTH SUDAN", "SPAIN", "SRI LANKA", "SUDAN", "SWEDEN",
+    "SWITZERLAND", "SYRIA", "TAJIKISTAN", "TANZANIA", "THAILAND", "TOGO",
+    "TUNISIA", "TURKEY", "TURKMENISTAN", "UGANDA", "UKRAINE", "UNITED ARAB EMIRATES",
+    "UNITED KINGDOM", "UNITED STATES", "URUGUAY", "UZBEKISTAN", "VENEZUELA",
+    "VIETNAM", "YEMEN", "ZAMBIA", "ZIMBABWE"
+  ];
+
+  const natSelect = document.getElementById("nationalitySel");
+  countries.slice().sort().forEach(function(country) {
+    const opt = document.createElement("option");
+    opt.value = country;
+    opt.textContent = country;
+    natSelect.appendChild(opt);
+  });
+
+  window.addEventListener("pageshow", function() {
+    document.getElementById("appTrackForm").reset();
+  });
+
+  document.getElementById("appTrackForm").addEventListener("submit", function(event) {
+    event.preventDefault();
+
+    const appNo = document.getElementById("visaAppNo").value.trim();
+    const nat = document.getElementById("nationalitySel").value;
+    const docNo = document.getElementById("travelDocNo").value.trim().toUpperCase();
+    const cap = document.getElementById("captchaField").value.trim();
+
+    const resultWrap = document.getElementById("resultTableWrap");
+    const errorBox = document.getElementById("errorMsg");
+    const searchingLabel = document.getElementById("searchingLabel");
+    const searchBtn = document.getElementById("searchBtn");
+
+    resultWrap.style.display = "none";
+    errorBox.style.display = "none";
+    searchingLabel.style.display = "inline";
+    searchBtn.disabled = true;
+
+    setTimeout(function() {
+      searchingLabel.style.display = "none";
+      searchBtn.disabled = false;
+
+      if (appNo === "100066707335" && nat === "ETHIOPIA" && docNo === "E00865368" && cap === "2255") {
+        document.getElementById("resAppNo").textContent = appNo;
+        document.getElementById("resNat").textContent = nat;
+        document.getElementById("resDocNo").textContent = docNo;
+        resultWrap.style.display = "block";
+      } else {
+        errorBox.style.display = "block";
+      }
+    }, 1200);
+  });
+</script>
+
+</body>
+</html>
