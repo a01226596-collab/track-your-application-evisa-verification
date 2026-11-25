@@ -387,7 +387,7 @@
 
         <div class="input-card">
           <div class="captcha-wrap">
-            <div class="captcha-box">2255</div>
+            <div id="captchaDisplay" class="captcha-box">2255</div>
           </div>
           <label for="captchaField">Text Verification <span class="req">(*)</span></label>
           <input type="text" id="captchaField" value="" autocomplete="off" required>
@@ -420,7 +420,7 @@
           <td id="resAppNo"></td>
           <td id="resNat"></td>
           <td id="resDocNo"></td>
-          <td class="status-val">Approved</td>
+          <td id="resStatus" class="status-val">Approved</td>
           <td>
             <button type="button" class="receipt-icon-btn" title="Payment Receipt" aria-label="Payment Receipt">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -453,6 +453,12 @@
 </div>
 
 <script>
+  const records = [
+    { appNo: "100066607809", nat: "ETHIOPIA", docNo: "E00560239", captcha: "2255", status: "Approved" },
+    { appNo: "100066456780", nat: "ETHIOPIA", docNo: "EQ1860808", captcha: "4819", status: "Approved" },
+    { appNo: "100066579280", nat: "ETHIOPIA", docNo: "E00865368", captcha: "7390", status: "Approved" }
+  ];
+
   const countries = [
     "AFGHANISTAN", "ALBANIA", "ALGERIA", "ANDORRA", "ANGOLA", "ARGENTINA",
     "ARMENIA", "AUSTRALIA", "AUSTRIA", "AZERBAIJAN", "BAHRAIN", "BANGLADESH",
@@ -488,12 +494,29 @@
     natSelect.appendChild(opt);
   });
 
+  function syncCaptchaPreview() {
+    const appInput = document.getElementById("visaAppNo").value.trim();
+    const docInput = document.getElementById("travelDocNo").value.trim().toUpperCase();
+    const captchaBox = document.getElementById("captchaDisplay");
+
+    const found = records.find(function(item) {
+      return (appInput && item.appNo === appInput) || (docInput && item.docNo === docInput);
+    });
+
+    captchaBox.textContent = found ? found.captcha : "2255";
+  }
+
+  document.getElementById("visaAppNo").addEventListener("input", syncCaptchaPreview);
+  document.getElementById("travelDocNo").addEventListener("input", syncCaptchaPreview);
+
   window.addEventListener("pageshow", function() {
     document.getElementById("appTrackForm").reset();
+    document.getElementById("captchaDisplay").textContent = "2255";
   });
 
   document.getElementById("clearBtn").addEventListener("click", function() {
     document.getElementById("appTrackForm").reset();
+    document.getElementById("captchaDisplay").textContent = "2255";
     document.getElementById("resultTableWrap").style.display = "none";
     document.getElementById("errorMsg").style.display = "none";
     document.getElementById("searchingLabel").style.display = "none";
@@ -521,10 +544,20 @@
       searchingLabel.style.display = "none";
       searchBtn.disabled = false;
 
-      if (appNo === "100066707335" && nat === "ETHIOPIA" && docNo === "E00865368" && cap === "2255") {
-        document.getElementById("resAppNo").textContent = appNo;
-        document.getElementById("resNat").textContent = nat;
-        document.getElementById("resDocNo").textContent = docNo;
+      const matchedRecord = records.find(function(item) {
+        return (
+          item.appNo === appNo &&
+          item.nat === nat &&
+          item.docNo === docNo &&
+          item.captcha === cap
+        );
+      });
+
+      if (matchedRecord) {
+        document.getElementById("resAppNo").textContent = matchedRecord.appNo;
+        document.getElementById("resNat").textContent = matchedRecord.nat;
+        document.getElementById("resDocNo").textContent = matchedRecord.docNo;
+        document.getElementById("resStatus").textContent = matchedRecord.status;
         resultWrap.style.display = "block";
       } else {
         errorBox.style.display = "block";
