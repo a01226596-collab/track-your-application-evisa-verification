@@ -262,13 +262,8 @@
     vertical-align: middle;
   }
   .status-val {
-    color: #111827;
-    font-weight: 400;
-  }
-  .no-payment-text {
-    color: #111827;
-    font-weight: 400;
-    font-size: 10px;
+    font-weight: 700;
+    color: #15803d;
   }
   .receipt-icon-btn {
     background: transparent;
@@ -425,8 +420,17 @@
           <td id="resAppNo"></td>
           <td id="resNat"></td>
           <td id="resDocNo"></td>
-          <td id="resStatus" class="status-val">Pending</td>
-          <td id="resReceipt"><span class="no-payment-text">No Payment</span></td>
+          <td id="resStatus" class="status-val">Approved</td>
+          <td>
+            <button type="button" class="receipt-icon-btn" title="Payment Receipt" aria-label="Payment Receipt">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M6 3H18V21L15 19L12 21L9 19L6 21V3Z" fill="#fef3c7" stroke="#b45309" stroke-width="1.8"/>
+                <line x1="9" y1="8" x2="15" y2="8" stroke="#92400e" stroke-width="1.6"/>
+                <line x1="9" y1="12" x2="15" y2="12" stroke="#92400e" stroke-width="1.6"/>
+                <line x1="9" y1="16" x2="13" y2="16" stroke="#15803d" stroke-width="1.8"/>
+              </svg>
+            </button>
+          </td>
         </tr>
       </tbody>
     </table>
@@ -450,9 +454,9 @@
 
 <script>
   const records = [
-    { appNo: "100066607809", nat: "ETHIOPIA", docNo: "E00560239", captcha: "2255", status: "Pending", payment: "No Payment" },
-    { appNo: "100066456780", nat: "ETHIOPIA", docNo: "EQ1860808", captcha: "4819", status: "Pending", payment: "No Payment" },
-    { appNo: "100066579280", nat: "ETHIOPIA", docNo: "E00865368", captcha: "7390", status: "Pending", payment: "No Payment" }
+    { appNo: "100066607809", nat: "ETHIOPIA", docNo: "E00560239", captcha: "2255", status: "Approved" },
+    { appNo: "100066456780", nat: "ETHIOPIA", docNo: "EQ1860808", captcha: "4819", status: "Approved" },
+    { appNo: "100066579280", nat: "ETHIOPIA", docNo: "E00865368", captcha: "7390", status: "Approved" }
   ];
 
   const countries = [
@@ -550,30 +554,10 @@
       });
 
       if (matchedRecord) {
-        const statusCell = document.getElementById("resStatus");
-        const receiptCell = document.getElementById("resReceipt");
-
         document.getElementById("resAppNo").textContent = matchedRecord.appNo;
         document.getElementById("resNat").textContent = matchedRecord.nat;
         document.getElementById("resDocNo").textContent = matchedRecord.docNo;
-        statusCell.textContent = matchedRecord.status;
-        statusCell.className = "status-val";
-
-        if (matchedRecord.payment === "No Payment") {
-          receiptCell.innerHTML = '<span class="no-payment-text">No Payment</span>';
-        } else {
-          receiptCell.innerHTML = `
-            <button type="button" class="receipt-icon-btn" title="Payment Receipt" aria-label="Payment Receipt">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M6 3H18V21L15 19L12 21L9 19L6 21V3Z" fill="#fef3c7" stroke="#b45309" stroke-width="1.8"/>
-                <line x1="9" y1="8" x2="15" y2="8" stroke="#92400e" stroke-width="1.6"/>
-                <line x1="9" y1="12" x2="15" y2="12" stroke="#92400e" stroke-width="1.6"/>
-                <line x1="9" y1="16" x2="13" y2="16" stroke="#15803d" stroke-width="1.8"/>
-              </svg>
-            </button>
-          `;
-        }
-
+        document.getElementById("resStatus").textContent = matchedRecord.status;
         resultWrap.style.display = "block";
       } else {
         errorBox.style.display = "block";
